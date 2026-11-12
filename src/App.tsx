@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SolarSystemCanvas from './components/SolarSystemCanvas';
 import Controls from './components/Controls';
 import PlanetInfo from './components/PlanetInfo';
+import DeployGuide from './components/DeployGuide';
 import { PlanetData } from './data/planets';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   const [speed, setSpeed] = useState(1);
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetData | null>(null);
   const [showSun, setShowSun] = useState(false);
+  const [showDeployGuide, setShowDeployGuide] = useState(false);
 
   const handlePlanetClick = (planet: PlanetData) => {
     setSelectedPlanet(planet);
@@ -80,12 +82,30 @@ function App() {
         onClose={handleCloseInfo}
       />
 
+      {/* Deploy Guide Button */}
+      <button
+        onClick={() => setShowDeployGuide(true)}
+        className="absolute bottom-6 right-6 z-10 flex items-center gap-2 bg-black/70 backdrop-blur-md rounded-xl px-4 py-2.5 border border-white/10 hover:border-white/20 text-white/70 hover:text-white transition-all hover:bg-black/80 group"
+        title="Как развернуть локально"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="group-hover:rotate-12 transition-transform">
+          <path d="M2 13l4-4m0 0l-1-4 4 1m-3 3l6-6m-6 6l1 4 4-1" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        <span className="text-sm font-medium">Как запустить</span>
+      </button>
+
       {/* Controls */}
       <Controls
         isPlaying={isPlaying}
         speed={speed}
         onTogglePlay={() => setIsPlaying(!isPlaying)}
         onSpeedChange={setSpeed}
+      />
+
+      {/* Deploy Guide Modal */}
+      <DeployGuide
+        isOpen={showDeployGuide}
+        onClose={() => setShowDeployGuide(false)}
       />
     </div>
   );
