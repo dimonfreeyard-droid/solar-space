@@ -86,12 +86,29 @@ const PlanetInfo: React.FC<PlanetInfoProps> = ({ planet, showSun, onClose }) => 
               : `${planet.orbitalPeriod} дней`}
           </span>
         </div>
+        {planet.id === 'venus' && (
+          <div className="flex justify-between text-sm">
+            <span className="text-white/50">Вращение вокруг оси:</span>
+            <span className="text-orange-300 font-medium">243 дня (обратное)</span>
+          </div>
+        )}
         <div className="flex justify-between text-sm">
           <span className="text-white/50">Сравнение с Землёй:</span>
           <span className="text-white font-medium">
             {(planet.radius / 6371).toFixed(2)}x
           </span>
         </div>
+        {planet.id === 'venus' && (
+          <div className="mt-3 p-2 rounded-lg bg-orange-500/10 border border-orange-500/20">
+            <div className="flex items-center gap-2">
+              <span className="text-orange-400 text-lg">↻</span>
+              <div>
+                <p className="text-orange-300 text-xs font-medium">Ретроградное вращение</p>
+                <p className="text-white/60 text-xs">Вращается по часовой стрелке (Солнце восходит на западе)</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

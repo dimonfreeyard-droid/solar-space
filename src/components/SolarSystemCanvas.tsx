@@ -154,12 +154,59 @@ const SolarSystemCanvas: React.FC<SolarSystemCanvasProps> = ({ isPlaying, speed,
       ctx.stroke();
     }
 
+    // Venus retrograde rotation indicator
+    if (planet.id === 'venus') {
+      const arrowRadius = size * 1.8;
+      const time = performance.now() / 1000;
+      const arrowAngle = time * 0.8; // clockwise (retrograde)
+      
+      // Draw rotation arrow (clockwise = retrograde)
+      ctx.save();
+      ctx.translate(x, y);
+      
+      // Arc
+      ctx.beginPath();
+      ctx.arc(0, 0, arrowRadius, arrowAngle, arrowAngle + Math.PI * 1.3);
+      ctx.strokeStyle = 'rgba(232, 205, 160, 0.6)';
+      ctx.lineWidth = 1.5 * scale;
+      ctx.stroke();
+      
+      // Arrowhead
+      const headAngle = arrowAngle + Math.PI * 1.3;
+      const headX = Math.cos(headAngle) * arrowRadius;
+      const headY = Math.sin(headAngle) * arrowRadius;
+      const arrowSize = 4 * scale;
+      
+      ctx.beginPath();
+      ctx.moveTo(headX, headY);
+      ctx.lineTo(
+        headX + Math.cos(headAngle + Math.PI * 0.7) * arrowSize,
+        headY + Math.sin(headAngle + Math.PI * 0.7) * arrowSize
+      );
+      ctx.lineTo(
+        headX + Math.cos(headAngle + Math.PI * 0.3) * arrowSize,
+        headY + Math.sin(headAngle + Math.PI * 0.3) * arrowSize
+      );
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(232, 205, 160, 0.7)';
+      ctx.fill();
+      
+      ctx.restore();
+    }
+
     // Label on hover
     if (isHovered) {
       ctx.font = `${12 * Math.max(scale, 0.8)}px sans-serif`;
       ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
       ctx.textAlign = 'center';
       ctx.fillText(planet.nameRu, x, y - size - 8);
+      
+      // Show retrograde label for Venus
+      if (planet.id === 'venus') {
+        ctx.font = `${9 * Math.max(scale, 0.8)}px sans-serif`;
+        ctx.fillStyle = 'rgba(232, 205, 160, 0.7)';
+        ctx.fillText('↻ ретроградное', x, y - size - 20);
+      }
     }
   }, []);
 
